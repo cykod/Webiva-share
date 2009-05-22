@@ -22,7 +22,7 @@ Upload File: <%= uf.upload_document :upload_file_id %>
 
 <div>
 Email:<br/>
-<%= uf.text_field :import_email, :size => 15, :class => 'text_field' %>@<%= uf.select :import_provider, ['aol.com','gmail.com','hotmail.com','yahoo.com'] %><br/>
+<%= uf.text_field :import_email, :size => 15, :class => 'text_field' %>@<%= uf.select :import_provider, ['gmail.com','hotmail.com','yahoo.com'] %><br/>
 Password:<br/>
 <%= uf.password_field :import_password,:size => 20, :class => 'text_field' %>
 </div>

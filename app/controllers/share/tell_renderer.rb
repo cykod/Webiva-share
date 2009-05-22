@@ -13,6 +13,13 @@ class Share::TellRenderer < ParagraphRenderer
   
   def tell_friend
     @options = paragraph_options(:tell_friend)
+    
+    
+    if @options.plaxo_import
+      require_js((request.ssl? ? 'https' : 'http')  + '://www.plaxo.com/css/m/js/util.js')
+      require_js((request.ssl? ? 'https' : 'http')  + '://www.plaxo.com/css/m/js/basic.js')
+      require_js((request.ssl? ? 'https' : 'http')  + '://www.plaxo.com/css/m/js/abc_launcher.js')
+    end
 
     if params["tell_friend_#{paragraph.id}"]
       handle_image_upload(params["tell_friend_#{paragraph.id}"],:upload_file_id, :location => Configuration.options[:user_image_folder])

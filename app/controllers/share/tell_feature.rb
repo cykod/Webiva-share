@@ -8,11 +8,8 @@ class Share::TellFeature < ParagraphFeature
     </cms:sent>
     <cms:tell_friend>
       <cms:errors><div class='error'><cms:value/></div></cms:errors>
-      <cms:options>
-      Send To:<br/>
-        <cms:value/><br/>
-      </cms:options>
       <cms:to/>
+      <cms:plaxo_link>Import from your address book</cms:plaxo_link><br/>
       Message subject:<br/>
       <cms:subject/><br/>
       Message:<br/>
@@ -60,6 +57,13 @@ class Share::TellFeature < ParagraphFeature
             nil
           end
         end
+        
+        c.link_tag('tell_friend:plaxo') do |t|
+          { :href => 'javascript:void(0);',
+            :onclick => "showPlaxoABChooser('tell_friend_#{data[:paragraph].id}_manual_to', '/website/share/tell/plaxo_import'); return false;"
+          }
+        end
+        
         c.define_tag('tell_friend:to') { |tag| data[:to_html] }
         c.define_form_field_tag('tell_friend:subject')
         c.define_form_field_tag('tell_friend:message',:control => 'text_area')

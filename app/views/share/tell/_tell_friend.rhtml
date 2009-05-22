@@ -1,3 +1,6 @@
+<script type="text/javascript"><!--
+function onABCommComplete() { }
+//--></script>
 <% cms_unstyled_fields_for "tell_friend_#{paragraph.id}", message do |f| -%>
   <%= renderer.share_tell_friend_feature({ :options => options, :f => f, :paragraph => paragraph, :to_html => to_html, :sent => sent, :message => message }) %>
 <% end -%>

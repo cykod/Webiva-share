@@ -1,6 +1,6 @@
 
 class Share::TellFriendMessage < HashModel
-  attributes :to => '', :subject => '',:message => '',:send_type => 'manual', :manual_to => nil, :emails_select => [], :import_email => nil, :import_provider => nil, :import_password => nil, :selected_email => [], :import_emails => [], :upload_file_id => nil
+  attributes :to => '', :subject => '',:message => '',:send_type => 'manual', :manual_to => nil, :emails_select => [], :import_email => nil, :import_provider => nil, :import_password => nil, :selected_email => [], :import_emails => [], :upload_file_id => nil, :name => nil
   
   validates_presence_of :send_type
   
@@ -19,7 +19,7 @@ class Share::TellFriendMessage < HashModel
   
   def validate
     errors.add_to_base("Please enter a subject") if self.subject.blank? && !self.skip_subject   
-    errors.add_to_base("Please enter a mesasge") if self.message.blank? && !self.skip_message
+    errors.add_to_base("Please enter a message") if self.message.blank? && !self.skip_message
   
     case self.send_type
     when 'manual':

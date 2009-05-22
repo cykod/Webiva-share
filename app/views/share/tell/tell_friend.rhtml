@@ -8,5 +8,6 @@
   <%= f.text_field :default_subject, :vertical=> true, :size => 80 %>
   <%= f.text_area :default_message, :vertical=> true,:rows => 10, :cols =>80  %>
   <%= f.radio_buttons :share_level, Share::TellController::TellFriendOptions.share_level_select_options, :vertical => true %>
+  <%= f.radio_buttons :plaxo_import, [['Yes',true],['No',false]], :vertical => true,:label => 'Include Plaxo Javascript' %>
 <% end -%>
 </div>
