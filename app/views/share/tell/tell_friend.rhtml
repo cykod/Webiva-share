@@ -2,7 +2,7 @@
 <% paragraph_options_form_for :tell_friend do |f| -%>
   <%= f.check_boxes :options, Share::TellController::TellFriendOptions.options_select_options, :vertical => true %>
   <%= f.select :email_template_id,[['--Select Mail Template--',nil]] + MailTemplate.site_template_options, :vertical => true %>
-  <%= f.text_field :email_from, :vertical => true, :description => 'Leave blank to use default from address' %>
+  <%= f.text_field :email_from, :vertical => true, :description => 'Leave blank to use default from address\nEnter a full email address, use %%sender_name%% for the name of the submitter' %>
   <%= f.select :success_page_id, [['--Stay on same page--',nil]] +  SiteNode.page_options, :vertical => true %>
   <%= f.radio_buttons :show, [['Subject+Message','both'],['Message only','message'],['None','none']] %>
   <%= f.text_field :default_subject, :vertical=> true, :size => 80 %>

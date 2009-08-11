@@ -63,7 +63,7 @@ class Share::TellRenderer < ParagraphRenderer
                 end
               end
                     
-              vars['system:from'] = @options.email_from unless @options.email_from.blank?
+              vars['system:from'] = DomainModel.variable_replace(@options.email_from,vars) unless @options.email_from.blank?
               
               MailTemplateMailer.deliver_to_address(email,@mail_template,vars )
               ef = EmailFriend.create(:end_user_id => myself.id,:from_name => sender_name,:to_email => email,:message => h(@message.message), :sent_at => Time.now,:ip_address => request.remote_ip, :session => session.session_id, :site_url => page_path)
