@@ -1,9 +1,8 @@
 
 class Share::TellController < ParagraphController 
-
-
+  
   editor_header "Share Paragraphs"
-  editor_for :tell_friend, :name => 'Tell a friend Paragraph', :features => [:share_tell_friend], :inputs => { :variables => [ [ :vars, 'Invite Variables', :variables ], [:target, "Invite Target", :target] ] }
+  editor_for :tell_friend, :name => 'Tell a friend Paragraph', :feature => :share_tell_friend, :inputs => { :variables => [ [ :vars, 'Invite Variables', :variables ], [:target, "Invite Target", :target] ] }
   
   
   user_actions :plaxo_import
@@ -23,6 +22,11 @@ class Share::TellController < ParagraphController
   end
 
 
+  def tell_friend
+    @options = TellFriendOptions.new(params[:tell_friend] || paragraph.data || {})
+    return if handle_paragraph_update(@options)
+
+  end
  
 
   def plaxo_import

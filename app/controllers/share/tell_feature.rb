@@ -23,13 +23,16 @@ class Share::TellFeature < ParagraphFeature
   
   
   def share_tell_friend_feature(data)
+
     webiva_feature(:share_tell_friend) do |c|
-      c.define_tag('tell_friend') do |tag|
+      c.form_for_tag('tell_friend', "tell_friend_#{paragraph.id}") do |tag|
         if data[:sent]
           nil
-        else      
-          tag.locals.form = data[:f]
-          "<form action='' method='post' id='tell_friend_#{data[:paragraph].id}_form' enctype='multipart/form-data'>" + tag.expand + "</form>"
+        else 
+          {  :object => data[:message],
+              :id => "tell_friend_#{data[:paragraph].id}_form",
+             :code => "<script type='text/javascript'><!--function onABCommComplete() { }//--></script>"
+          }
         end
       end
       c.define_expansion_tag('sent') { |tag| data[:sent] }
