@@ -1,4 +1,4 @@
-require 'blackbook'
+#require 'blackbook'
 require 'fileutils'
 
 
@@ -22,7 +22,7 @@ class Share::TellRenderer < ParagraphRenderer
     end
 
     if params["tell_friend_#{paragraph.id}"]
-      handle_image_upload(params["tell_friend_#{paragraph.id}"],:upload_file_id, :location => Configuration.options[:user_image_folder])
+      handle_image_upload(params["tell_friend_#{paragraph.id}"],:upload_file_id, :location => Configuration.options.user_image_folder)
     end
     
     @message = Share::TellFriendMessage.new(params["tell_friend_#{paragraph.id}"])
@@ -118,9 +118,8 @@ class Share::TellRenderer < ParagraphRenderer
   
     data = { :message => @message, :options => @options, :paragraph => paragraph, :renderer => self, :to_html => to_html, :sent => flash[:sent_to_a_friend] }
     
-    render_paragraph :partial => '/share/tell/tell_friend',:locals => data 
-    
-    
+    render_paragraph :text => share_tell_friend_feature(data)
+
   end
   
 
