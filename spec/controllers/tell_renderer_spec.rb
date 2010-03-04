@@ -23,19 +23,17 @@ describe Share::TellRenderer, :type => :controller  do
   end
 
   
-  it 'should limit email based on configuration option' do
-    @ran_limit = 1 + rand(50)
-    options = {:email_limit => @ran_limit}
+ 
+  it 'should get email limit config option' do
+    @limit = 1 + rand(10)
+    options = {:email_template_id => 1, :email_limit => @limit}
     inputs = {}
     @rnd = share_renderer(options, inputs)
-    
+
     @rnd.should_render_feature( :share_tell_friend )
     renderer_get( @rnd )
-    @rnd.renderer_feature_data[:options].email_limit.should == @ran_limit
-
-    
+    @rnd.renderer_feature_data[:paragraph].data[:email_limit].should == @limit
   end
-
   
   
   it 'should accept multiple addresses' do 
