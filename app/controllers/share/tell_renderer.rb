@@ -1,4 +1,3 @@
-#require 'blackbook'
 require 'fileutils'
 
 
@@ -6,14 +5,11 @@ class Share::TellRenderer < ParagraphRenderer
 
 
   features '/share/tell_feature'
-  
-  
   paragraph :tell_friend
   
   
   def tell_friend
     @options = paragraph_options(:tell_friend)
-    
     
     if @options.plaxo_import
       require_js((request.ssl? ? 'https' : 'http')  + '://www.plaxo.com/css/m/js/util.js')
@@ -27,7 +23,6 @@ class Share::TellRenderer < ParagraphRenderer
     
     @message = Share::TellFriendMessage.new(params["tell_friend_#{paragraph.id}"])
     
-    
     if !@limit && request.post? && params["tell_friend_#{paragraph.id}"] 
       if @message.send_type == 'upload' 
         @message.process_upload
@@ -38,13 +33,14 @@ class Share::TellRenderer < ParagraphRenderer
          @message.errors.add_to_base('Please enter an email address')
         end
       else
+
         @message.skip_subject = true if @options.show != 'both'
         @message.skip_message = true if @options.show == 'none'
         @message.valid?
         self.check_email_limit!
         # Send the message
         if @message.errors.length == 0
-        
+          
           if @options.email_template_id.to_i > 0  && @mail_template = MailTemplate.find_by_id(@options.email_template_id.to_i)
             @mail_template.replace_image_sources
             @mail_template.replace_link_hrefs
@@ -66,7 +62,7 @@ class Share::TellRenderer < ParagraphRenderer
               vars['system:from'] = DomainModel.variable_replace(@options.email_from,vars) unless @options.email_from.blank?
               
               MailTemplateMailer.deliver_to_address(email,@mail_template,vars )
-              ef = EmailFriend.create(:end_user_id => myself.id,:from_name => sender_name,:to_email => email,:message => h(@message.message), :sent_at => Time.now,:ip_address => request.remote_ip, :session => session.session_id, :site_url => page_path)
+              ef = Share::EmailFriend.create(:end_user_id => myself.id,:from_name => sender_name,:to_email => email,:message => h(@message.message), :sent_at => Time.now,:ip_address => request.remote_ip, :session => session.session_id, :site_url => page_path)
 
               if connection_type == :target && conn_data.respond_to?(:share_notification)
                 targs = ef.attributes
@@ -82,6 +78,7 @@ class Share::TellRenderer < ParagraphRenderer
 
             if @options.success_page_id.to_i > 0
               redirect_paragraph :site_node => @options.success_page_id.to_i
+
             else
               flash[:sent_to_a_friend] = true
               redirect_paragraph :page
@@ -114,9 +111,8 @@ class Share::TellRenderer < ParagraphRenderer
     end
     
     
-    to_html = render_to_string :partial => '/share/tell/tell_friend_to', :locals => { :message => @message, :options => @options, :paragraph => paragraph }
   
-    data = { :message => @message, :options => @options, :paragraph => paragraph, :renderer => self, :to_html => to_html, :sent => flash[:sent_to_a_friend] }
+    data = { :message => @message, :options => @options, :paragraph => paragraph, :renderer => self, :sent => flash[:sent_to_a_friend] }
     
     render_paragraph :text => share_tell_friend_feature(data)
 
@@ -125,15 +121,14 @@ class Share::TellRenderer < ParagraphRenderer
 
   
   def check_email_limit!
-  
     email_limit = (@options.email_limit || 20).to_i
     ip_limit = (@options.ip_limit || 100).to_i
     
     if myself.id 
-      sent_emails = EmailFriend.count(:all,:conditions => ['end_user_id=? AND sent_at >= ?',myself.id,24.hours.ago])
-      sent_emails_ip = EmailFriend.count(:all,:conditions => ['ip_address=? AND sent_at >= ?',request.remote_ip,24.hours.ago])
+      sent_emails = Share::EmailFriend.count(:all,:conditions => ['end_user_id=? AND sent_at >= ?',myself.id,24.hours.ago])
+      sent_emails_ip = Share::EmailFriend.count(:all,:conditions => ['ip_address=? AND sent_at >= ?',request.remote_ip,24.hours.ago])
     else
-      sent_emails = EmailFriend.count(:all, :conditions => ['ip_address = ? AND sent_at >= ?',request.remote_ip,24.hours.ago])
+      sent_emails = Share::EmailFriend.count(:all, :conditions => ['ip_address = ? AND sent_at >= ?',request.remote_ip,24.hours.ago])
     end  
       
     if myself.id && sent_emails >= email_limit

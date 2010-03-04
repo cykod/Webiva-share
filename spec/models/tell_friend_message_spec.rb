@@ -21,8 +21,6 @@ describe Share::TellFriendMessage do
   it 'should receive an error when bad email entered' do
     @share = create_message({:manual_to=>'c ykod'})
     @share.valid?
-    
- #   raise @share.errors.full_messages.inspect
     @share.errors.on_base.should == "'c ykod' is not a valid email"
     @share.should have(1).errors()    
   end
@@ -39,18 +37,18 @@ describe Share::TellFriendMessage do
   end
 
   it 'create accept more than one email address' do
-    @share = create_message({:manual_to=>"tia@cykod.com\r\ntia@mywebiva.net"})
+    @share = create_message({:manual_to=>"daffyduck@cykod.com\r\ndonaldduck@cykod.com"})
     @share.valid?.should == true
   end
   
   
   it 'create create a list of emails' do
-    @share = create_message({:manual_to=>"tia@cykod.com\r\ntia@mywebiva.net"})
+    @share = create_message({:manual_to=>"daffyduck@cykod.com\r\ndonaldduck@cykod.com"})
     
     @share.valid?.should == true
     @emails = @share.generate_manual_email_list
-    @emails[0].should == 'tia@cykod.com'
-    @emails[1].should == 'tia@mywebiva.net'
+    @emails[0].should == 'daffyduck@cykod.com'
+    @emails[1].should == 'donaldduck@cykod.com'
 
   end
 end

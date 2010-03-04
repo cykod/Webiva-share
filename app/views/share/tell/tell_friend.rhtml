@@ -1,13 +1,14 @@
 <div class='cms_form'>
 <% paragraph_options_form_for 'Tell a friend Options', :tell_friend do |f| -%>
-  <%= f.check_boxes :options, Share::TellController::TellFriendOptions.options_select_options, :vertical => true %>
   <%= f.select :email_template_id,[['--Select Mail Template--',nil]] + MailTemplate.site_template_options, :vertical => true %>
   <%= f.text_field :email_from, :vertical => true, :description => 'Leave blank to use default from address\nEnter a full email address, use %%sender_name%% for the name of the submitter' %>
   <%= f.select :success_page_id, [['--Stay on same page--',nil]] +  SiteNode.page_options, :vertical => true %>
   <%= f.radio_buttons :show, [['Subject+Message','both'],['Message only','message'],['None','none']] %>
   <%= f.text_field :default_subject, :vertical=> true, :size => 80 %>
   <%= f.text_area :default_message, :vertical=> true,:rows => 10, :cols =>80  %>
-  <%= f.radio_buttons :share_level, Share::TellController::TellFriendOptions.share_level_select_options, :vertical => true %>
+  <%= f.text_field :email_limit, :vertical=> true, :size => 5, :value => @options.email_limit, :description => 'The default is 20 per user' %>
+
+  <%= f.radio_buttons :share_level, Share::TellController::TellFriendOptions.share_level_select_options, :vertical => true, :description => 'This is only necessary for page connections' %>
   <%= f.radio_buttons :plaxo_import, [['Yes',true],['No',false]], :vertical => true,:label => 'Include Plaxo Javascript' %>
 <% end -%>
 </div>

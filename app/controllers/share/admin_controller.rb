@@ -1,12 +1,23 @@
 class Share::AdminController < ModuleController
-  component_info 'Share', :description => 'Site Sharing support - tell-a-friend paragraph / etc ', 
-                              :access => :public
-                              
-  # Register a handler feature
-  register_permission_category :share, "Share" ,"Permissions Related Sharing Functionality"
+  permit 'editor'
+
+  component_info 'Share', :description => "See emails sent with Tell-a-friend", 
+  :access => :public
   
-  register_permissions :share, [ [ :share_track, 'Track Sharing', 'Whether a user can track sharing links']
-                                ]
+  register_permissions :editor, [ [:share, 'Share', 'Permissions related to Share'] ]
+  
+  module_for :mail, 'Mail', :description => 'Add E-Marketing Pages to your site'
 
+  user_actions :mail
 
+  register_handler :navigation, :emarketing, "Share::AdminController"
+
+  def self.navigation_emarketing_handler_info
+    {:name => 'E-Marketing Pages',
+      :pages => [ [ "Tell a Friend", :editor_mailing, "emarketing_campaigns.gif", {  :controller => '/share/manage', :action => 'tell_friends' },
+                    "blahblahblah" ]
+                ]
+    }
+  end
+  
 end
