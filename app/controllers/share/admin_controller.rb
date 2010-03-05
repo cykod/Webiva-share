@@ -4,7 +4,7 @@ class Share::AdminController < ModuleController
   component_info 'Share', :description => "See emails sent with Tell-a-friend", 
   :access => :public
   
-  register_permissions :editor, [ [:share, 'Share', 'Permissions related to Share'] ]
+  register_permissions :editor, [ [:share, 'Share', 'View the tell-a-friend pages'] ]
   
   module_for :mail, 'Mail', :description => 'Add E-Marketing Pages to your site'
 
