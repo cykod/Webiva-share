@@ -8,13 +8,13 @@ class Share::TellController < ParagraphController
   user_actions :plaxo_import
   
   class TellFriendOptions  < HashModel
-    attributes :options => [ 'manual','import','upload'], :email_template_id => nil, :success_page_id => nil, :default_subject => nil, :default_message => nil, :show => 'both', :email_from => nil, :share_level => 'low', :plaxo_import => true
+    attributes :options => [ 'manual','import','upload'], :email_template_id => nil, :success_page_id => nil, :default_subject => nil, :default_message => nil, :show => 'both', :email_from => nil, :share_level => 'low', :plaxo_import => true, :connect_to_people => false, :people_tags => '', :require_email => false
     
     has_options :share_level, ['low','medium','high']
     validates_presence_of :options
     
     
-    boolean_options :plaxo_import
+    boolean_options :plaxo_import, :connect_to_people, :require_email
     
     integer_options :success_page_id,:email_template_id
         

@@ -15,9 +15,9 @@ class Share::TellFeature < ParagraphFeature
       Message:<br/>
       <cms:message/><br/>
       <cms:anonymous>
-      First Name: <cms:first_name/> Last Name: <cms:last_name/><br/>
+      Your Name: <cms:first_name/> <cms:last_name/><br/>
       <cms:require_email>
-         Your Email: <cms:email/>
+         Email: <cms:email/>
       </cms:require_email>
 
       </cms:anonymous>
@@ -77,10 +77,10 @@ class Share::TellFeature < ParagraphFeature
         
         c.define_expansion_tag('anonymous') { |tag| myself.id.blank? }
         c.define_form_field_tag('tell_friend:name')
-        c.define_form_field_tag('tell_friend:first_name', :size => 15)
-        c.define_form_field_tag('tell_friend:last_name', :size => 15)
+        c.define_form_field_tag('tell_friend:first_name')
+        c.define_form_field_tag('tell_friend:last_name')
         c.define_form_field_tag('tell_friend:email')
-        c.expansion_tag('tell_friend:require_email') { |t| data[:options].require_email }
+        c.expansion_tag('tell_friend:require_email') { |t| data[:options].require_email?
 
 
 

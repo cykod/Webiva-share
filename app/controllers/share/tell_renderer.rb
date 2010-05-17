@@ -21,10 +21,6 @@ class Share::TellRenderer < ParagraphRenderer
       require_js((request.ssl? ? 'https' : 'http')  + '://www.plaxo.com/css/m/js/abc_launcher.js')
     end
 
-    if params["tell_friend_#{paragraph.id}"]
-      handle_image_upload(params["tell_friend_#{paragraph.id}"],:upload_file_id, :location => Configuration.options.user_image_folder)
-    end
-    
     @message = Share::TellFriendMessage.new(params["tell_friend_#{paragraph.id}"])
     
     
@@ -40,19 +36,35 @@ class Share::TellRenderer < ParagraphRenderer
       else
         @message.skip_subject = true if @options.show != 'both'
         @message.skip_message = true if @options.show == 'none'
+        @message.require_email = true if @options.require_email
         @message.valid?
         self.check_email_limit!
         # Send the message
         if @message.errors.length == 0
+
+          if @options.connect_to_people && !@message.email.blank?
+            
+            people_attr = {}
+            if !@message.first_name.blank? | !@message.last_name.blank?
+              people_attr[:first_name] = @message.first_name
+              people_attr[:last_name] = @message.last_name
+            else
+              people_attr[:name] = @message.name
+            end
+            @usr = EndUser.push_target(@message.email,people_attr)
+            @usr.tag_names_add(@options.people_tags) if !@options.people_tags.blank?
+          end
+
         
           if @options.email_template_id.to_i > 0  && @mail_template = MailTemplate.find_by_id(@options.email_template_id.to_i)
             @mail_template.replace_image_sources
             @mail_template.replace_link_hrefs
             
             sender_name = myself.id.blank? ? @message.name : myself.name 
+            sender_email = myself.email.blank? ? @message.email : myself.email
             
             @message.emails.each do |email|
-              vars = { :sender_name => h(sender_name), :message =>@mail_template.is_text ? h(@message.message) : simple_format(h(@message.message)),  :subject => @message.subject }
+              vars = { :sender_name => h(sender_name), :sender_email => h(sender_email), :message =>@mail_template.is_text ? h(@message.message) : simple_format(h(@message.message)),  :subject => @message.subject }
               
              connection_type,conn_data = page_connection(:variables)
               if connection_type == :vars
