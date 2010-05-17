@@ -123,7 +123,7 @@ class Share::TellRenderer < ParagraphRenderer
     
     
   
-    data = { :message => @message,:paragraph => paragraph, :sent => flash[:sent_to_a_friend] }
+    data = { :message => @message,:paragraph => paragraph, :sent => flash[:sent_to_a_friend], :options => @options }
     
     render_paragraph :text => share_tell_friend_feature(data)
 
