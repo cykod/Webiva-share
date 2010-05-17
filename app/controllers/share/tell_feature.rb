@@ -18,7 +18,11 @@ class Share::TellFeature < ParagraphFeature
       Message:<br/>
       <cms:message/><br/>
       <cms:anonymous>
-      Your Name: <cms:name/>
+      First Name: <cms:first_name/> Last Name: <cms:last_name/><br/>
+      <cms:require_email>
+         Your Email: <cms:email/>
+      </cms:require_email>
+
       </cms:anonymous>
       <cms:button>Send Message</cms:button>
     </cms:tell_friend>
@@ -32,7 +36,7 @@ class Share::TellFeature < ParagraphFeature
           nil
         else 
           {  :object => data[:message],
-              :id => "tell_friend_#{data[:paragraph].id}_form",
+             :html => { :id => "tell_friend_#{data[:paragraph].id}_form" },
              :code => "<script type='text/javascript'><!--function onABCommComplete() { }//--></script>"
           }
         end
@@ -52,7 +56,13 @@ class Share::TellFeature < ParagraphFeature
         
         c.define_expansion_tag('anonymous') { |tag| myself.id.blank? }
         c.define_form_field_tag('tell_friend:name')
-        
+        c.define_form_field_tag('tell_friend:first_name', :size => 15)
+        c.define_form_field_tag('tell_friend:last_name', :size => 15)
+        c.define_form_field_tag('tell_friend:email')
+        c.expansion_tag('tell_friend:require_email') { |t| data[:options].require_email }
+
+
+
         c.define_button_tag('tell_friend:button')
         c.define_expansion_tag('cancel') { |tag| data[:message].send_type == 'select' }
         c.define_button_tag('tell_friend:cancel:button', :onclick => 'document.location=document.location; return false');

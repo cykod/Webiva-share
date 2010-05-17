@@ -1,7 +1,7 @@
 
 class Share::TellFriendMessage < HashModel
-  attributes :to => '', :subject => '',:message => '',:send_type => 'manual', :manual_to => nil,:name => nil
-  
+  attributes :to => '', :subject => '',:message => '',:send_type => 'manual', :manual_to => nil,:name => nil, :first_name => nil, :last_name => nil, :email => nil, :require_email => false
+
   validates_presence_of :send_type
      
   attr_accessor :skip_subject, :skip_message
@@ -11,6 +11,9 @@ class Share::TellFriendMessage < HashModel
     errors.add_to_base("Please enter a message") if self.message.blank? && !self.skip_message
     @emails = generate_manual_email_list 
     self.errors.add_to_base("Please enter one or more email addresses") if @emails.length == 0
+    errors.add_to_base("Please enter your email") if self.email.blank? && self.require_email
+
+    self.name = self.first_name.to_s + " " + self.last_name.to_s if !self.first_name.blank? || !self.last_name.blank?
   
   end
   
