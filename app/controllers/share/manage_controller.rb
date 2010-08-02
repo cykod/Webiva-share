@@ -60,7 +60,7 @@
 
      CSV::Writer.generate(output) do |csv|
        csv << [ 'From', 'Email','To','Site Url','Sent At' ]
-       @tbl.data.each { |t|   csv << [ t.from_name,t.end_user.email,t.to_email,t.site_url,t.sent_at ]}
+       @tbl.data.each { |t|   csv << [ t.from_name,t.end_user ? t.end_user.email : nil,t.to_email,t.site_url,t.sent_at ]}
        
      end
      
