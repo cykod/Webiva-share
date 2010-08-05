@@ -24,6 +24,7 @@ class Share::TellFeature < ParagraphFeature
       </cms:require_email>
 
       </cms:anonymous>
+      <cms:captcha/>
       <cms:button>Send Message</cms:button>
     </cms:tell_friend>
   FEATURE
@@ -61,7 +62,7 @@ class Share::TellFeature < ParagraphFeature
         c.define_form_field_tag('tell_friend:email')
         c.expansion_tag('tell_friend:require_email') { |t| data[:options].require_email }
 
-
+        c.captcha_tag('tell_friend:captcha') { |t| data[:captcha] if data[:options].captcha }
 
         c.define_button_tag('tell_friend:button')
         c.define_expansion_tag('cancel') { |tag| data[:message].send_type == 'select' }

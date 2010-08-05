@@ -3,7 +3,9 @@ class Share::TellFriendMessage < HashModel
   attributes :to => '', :subject => '',:message => '',:send_type => 'manual', :manual_to => nil,:name => nil, :first_name => nil, :last_name => nil, :email => nil, :require_email => false
 
   validates_presence_of :send_type
-     
+  
+  include WebivaCaptcha::ModelSupport
+
   attr_accessor :skip_subject, :skip_message
   
   def validate

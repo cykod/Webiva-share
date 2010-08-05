@@ -15,7 +15,7 @@ class Share::AdminController < ModuleController
   def self.navigation_emarketing_handler_info
     {:name => 'E-Marketing Pages',
       :pages => [ [ "Tell a Friend", :editor_mailing, "emarketing_campaigns.gif", {  :controller => '/share/manage', :action => 'tell_friends' },
-                    "Show's the usage on the tell a friend paragraph" ]
+                    "Shows usage on the tell a friend paragraph" ]
                 ]
     }
   end
