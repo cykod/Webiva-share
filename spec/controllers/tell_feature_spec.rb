@@ -7,16 +7,16 @@ describe Share::TellFeature, :type => :view do
   describe 'share' do 
     before(:each) do
       @feature = build_feature('/share/tell_feature')      
-      @paragraph = mock :id => 17
+      @paragraph = mock :id => 17, :language => 'en'
       @message = Share::TellFriendMessage.new({})
-      @myself = mock :id => 24
+      @myself = mock :id => 24, :language => 'en'
     end
     it "should be able to render the form" do
       
       data = { :message => @message, :paragraph => @paragraph, :sent => false }
       
       
-      @feature.should_receive(:paragraph).and_return(@paragraph)
+      @feature.should_receive(:paragraph).any_number_of_times.and_return(@paragraph)
       @feature.should_receive(:myself).and_return(@myself)
       
       @output = @feature.share_tell_friend_feature(data)
@@ -27,7 +27,7 @@ describe Share::TellFeature, :type => :view do
     it "should be able to render the share default data" do
       data = { :message => @message, :paragraph => @paragraph, :sent => false }
       
-      @feature.should_receive(:paragraph).and_return(@paragraph)
+      @feature.should_receive(:paragraph).any_number_of_times.and_return(@paragraph)
       @feature.should_receive(:myself).and_return(@myself)
       
       @output = @feature.share_tell_friend_feature(data)
