@@ -1,0 +1,46 @@
+
+<input type='hidden' name='tell_friend_<%= paragraph.id %>[send_type]' value='<%= message.send_type %>' id='tell_friend_<%= paragraph.id %>_send_type' />
+
+<% if message.send_type != 'select' %>
+
+<% cms_unstyled_fields_for "tell_friend_#{paragraph.id}", message do |uf| -%>
+<div id='tell_friend_<%= paragraph.id %>_manual' <%= "style='display:none;'" unless message.send_type == 'manual' %>>
+Enter addresses (one per line):<br/>
+<%= uf.text_area :manual_to, :rows => 5, :cols => 30 %>
+
+<br/>
+</div>
+
+<div id='tell_friend_<%= paragraph.id %>_upload' <%= "style='display:none;'" unless message.send_type == 'upload' %>>
+Upload File: <%= uf.upload_document :upload_file_id %>
+
+<br/>
+</div>
+
+<div id='tell_friend_<%= paragraph.id %>_import' <%= "style='display:none;'" unless message.send_type == 'import' %>>
+
+<div>
+Email:<br/>
+<%= uf.text_field :import_email, :size => 15, :class => 'text_field' %>@<%= uf.select :import_provider, ['gmail.com','hotmail.com','yahoo.com'] %><br/>
+Password:<br/>
+<%= uf.password_field :import_password,:size => 20, :class => 'text_field' %>
+</div>
+</div>
+<% end -%>
+
+
+<% else %>
+<p>Select the contacts you want invite. You may select all or unselect all. To choose certain contacts check the ones you do want to invite or uncheck the ones you do not want to invite.</p>
+<a href='javascript:void(0);' onclick="var frm = document.getElementById('tell_friend_<%= paragraph.id %>_form') ; for(var i=0;i<frm.elements.length;i++) { if(frm.type='checkbox') frm.elements[i].checked = true };" >Select All</a> / <a href='javascript:void(0);' onclick="var frm = document.getElementById('tell_friend_<%= paragraph.id %>_form') ; for(var i=0;i<frm.elements.length;i++) { if(frm.type='checkbox') frm.elements[i].checked = false; };">Unselect All</a>
+<div class='share_select' >
+  <% message.import_emails.each do |email| %>
+    <input type='hidden' name='tell_friend_<%= paragraph.id %>[import_emails][]' value='<%= vh(email) %>' />
+    <label><input type='checkbox' name='tell_friend_<%= paragraph.id %>[selected_email][]' value='<%= vh(email) %>' checked='checked'/>
+           <%= h(email) %></label><br/>
+  <% end -%>
+
+</div>
+
+
+<% end -%>
+

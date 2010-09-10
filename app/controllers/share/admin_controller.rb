@@ -4,7 +4,7 @@ class Share::AdminController < ModuleController
   component_info 'Share', :description => "See emails sent with Tell-a-friend", 
   :access => :public
   
-  register_permissions :editor, [ [:share, 'Share', 'Permissions related to Share'] ]
+  register_permissions :editor, [ [:share, 'Share', 'View the tell-a-friend pages'] ]
   
   module_for :mail, 'Mail', :description => 'Add E-Marketing Pages to your site'
 
@@ -15,7 +15,7 @@ class Share::AdminController < ModuleController
   def self.navigation_emarketing_handler_info
     {:name => 'E-Marketing Pages',
       :pages => [ [ "Tell a Friend", :editor_mailing, "emarketing_campaigns.gif", {  :controller => '/share/manage', :action => 'tell_friends' },
-                    "blahblahblah" ]
+                    "Shows usage on the tell a friend paragraph" ]
                 ]
     }
   end

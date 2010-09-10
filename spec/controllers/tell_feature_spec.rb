@@ -13,7 +13,7 @@ describe Share::TellFeature, :type => :view do
     end
     it "should be able to render the form" do
       
-      data = { :message => @message, :paragraph => @paragraph, :sent => false }
+      data = { :message => @message, :paragraph => @paragraph, :sent => false, :options => Share::TellController::TellFriendOptions.new({}) }
       
       
       @feature.should_receive(:paragraph).any_number_of_times.and_return(@paragraph)
@@ -25,7 +25,7 @@ describe Share::TellFeature, :type => :view do
       @output.should include('Message subject:<br/>')
     end
     it "should be able to render the share default data" do
-      data = { :message => @message, :paragraph => @paragraph, :sent => false }
+      data = { :message => @message, :paragraph => @paragraph, :sent => false, :options => Share::TellController::TellFriendOptions.new({})  }
       
       @feature.should_receive(:paragraph).any_number_of_times.and_return(@paragraph)
       @feature.should_receive(:myself).and_return(@myself)

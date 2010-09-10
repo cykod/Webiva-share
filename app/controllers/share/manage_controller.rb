@@ -1,14 +1,17 @@
  class Share::ManageController < ModuleController
    
-   component_info 'Share'
+   component_info 'share'
    
    
-  cms_admin_paths 'e_marketing',
+   cms_admin_paths 'e_marketing',
                   'Emarketing' => { :controller => '/emarketing' },
                   'Tell-a-Friend' => {:action => 'tell_friends' }
    
    helper :active_tree
+
    
+   permit "editor_share"
+
    active_table :email_friend_table, Share::EmailFriend,
    [ ActiveTable::IconHeader.new('',:width => 10),
      ActiveTable::StringHeader.new('from_name'),
@@ -57,7 +60,7 @@
 
      CSV::Writer.generate(output) do |csv|
        csv << [ 'From', 'Email','To','Site Url','Sent At' ]
-       @tbl.data.each { |t|   csv << [ t.from_name,t.end_user.email,t.to_email,t.site_url,t.sent_at ]}
+       @tbl.data.each { |t|   csv << [ t.from_name,t.end_user ? t.end_user.email : nil,t.to_email,t.site_url,t.sent_at ]}
        
      end
      

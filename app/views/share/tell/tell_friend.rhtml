@@ -10,5 +10,11 @@
 
   <%= f.radio_buttons :share_level, Share::TellController::TellFriendOptions.share_level_select_options, :vertical => true, :description => 'This is only necessary for page connections' %>
   <%= f.radio_buttons :plaxo_import, [['Yes',true],['No',false]], :vertical => true,:label => 'Include Plaxo Javascript' %>
+   <%= f.radio_buttons :require_email, [['Yes'.t,true],['No'.t,false]] %>
+   <%= f.radio_buttons :connect_to_people, [['Yes'.t,true],['No'.t,false]] %>
+   <%= f.radio_buttons :captcha, [['Yes'.t,true],['No'.t,false]], :label => 'Require a Captcha' %>
+
+    <%= f.text_field :people_tags %>
+
 <% end -%>
 </div>
