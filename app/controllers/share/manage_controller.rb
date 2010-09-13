@@ -3,8 +3,8 @@
    component_info 'share'
    
    
-   cms_admin_paths 'e_marketing',
-                  'Emarketing' => { :controller => '/emarketing' },
+   cms_admin_paths 'mail',
+                  'Mail' => { :controller => '/mail_manager' },
                   'Tell-a-Friend' => {:action => 'tell_friends' }
    
    helper :active_tree
@@ -22,7 +22,7 @@
    ]
    
    def tell_friends
-     cms_page_path [ 'Emarketing'],'Tell-a-Friend'
+     cms_page_path [ 'Mail'],'Tell-a-Friend'
      
      display_email_friend_table(false)
    end
@@ -48,7 +48,7 @@
    ]
    
    def page_statistics
-     cms_page_path [ 'Emarketing','Tell-a-Friend'],'Page Statistics'
+     cms_page_path [ 'Mail','Tell-a-Friend'],'Page Statistics'
      
      display_email_friend_group_table(false)
      

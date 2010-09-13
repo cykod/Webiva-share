@@ -10,11 +10,11 @@ class Share::AdminController < ModuleController
 
   user_actions :mail
 
-  register_handler :navigation, :emarketing, "Share::AdminController"
+  register_handler :navigation, :mail, "Share::AdminController"
 
-  def self.navigation_emarketing_handler_info
-    {:name => 'E-Marketing Pages',
-      :pages => [ [ "Tell a Friend", :editor_mailing, "emarketing_campaigns.gif", {  :controller => '/share/manage', :action => 'tell_friends' },
+  def self.navigation_mail_handler_info
+    {:name => 'Mail Pages',
+      :pages => [ [ "Tell a Friend", :editor_mailing, "mail_tell_a_friend.png", {  :controller => '/share/manage', :action => 'tell_friends' },
                     "Shows usage on the tell a friend paragraph" ]
                 ]
     }
