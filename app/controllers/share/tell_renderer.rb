@@ -18,9 +18,9 @@ class Share::TellRenderer < ParagraphRenderer
       require_js((request.ssl? ? 'https' : 'http')  + '://www.plaxo.com/css/m/js/abc_launcher.js')
     end
 
-    @message = Share::TellFriendMessage.new(params["tell_friend_#{paragraph.id}"])
+    @message = Share::TellFriendMessage.new(params["tell_friend_#{paragraph.id}"] || params["tell_friend_submit"])
     
-    if !@limit && request.post? && params["tell_friend_#{paragraph.id}"] 
+    if !@limit && request.post? && (params["tell_friend_#{paragraph.id}"] || (!params["partial"] && params["tell_friend_submit"]))
       @message.skip_subject = true if @options.show != 'both'
       @message.skip_message = true if @options.show == 'none'
       @message.require_email = true if @options.require_email
