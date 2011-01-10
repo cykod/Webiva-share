@@ -24,11 +24,10 @@ class Share::TellRenderer < ParagraphRenderer
     if connection_type
       @message.content_node_id = conn_data if connection_type == :id
       @message.content_node_id = conn_data[1] if connection_type == :content_identifier
+      return render_paragraph :nothing => true if @message.content_node.nil?
     else
-      @message.content_node_id = site_node.content_node.id
+      @message.content_node_id = site_node.content_node.id if site_node.content_node
     end
-
-    return render_paragraph :nothing => true if @message.content_node.nil?
 
     if !@limit && request.post? && (params["tell_friend_#{paragraph.id}"] || (!params["partial"] && params["tell_friend_submit"]))
       @message.skip_subject = true if @options.show != 'both'
