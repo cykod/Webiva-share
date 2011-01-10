@@ -19,7 +19,17 @@ class Share::TellRenderer < ParagraphRenderer
     end
 
     @message = Share::TellFriendMessage.new(params["tell_friend_#{paragraph.id}"] || params["tell_friend_submit"])
-    
+
+    connection_type,conn_data = page_connection(:content)
+    if connection_type
+      @message.content_node_id = conn_data if connection_type == :id
+      @message.content_node_id = conn_data[1] if connection_type == :content_identifier
+    else
+      @message.content_node_id = site_node.content_node.id
+    end
+
+    return render_paragraph :nothing => true if @message.content_node.nil?
+
     if !@limit && request.post? && (params["tell_friend_#{paragraph.id}"] || (!params["partial"] && params["tell_friend_submit"]))
       @message.skip_subject = true if @options.show != 'both'
       @message.skip_message = true if @options.show == 'none'
@@ -66,7 +76,8 @@ class Share::TellRenderer < ParagraphRenderer
             vars['system:from'] = DomainModel.variable_replace(@options.email_from,vars) unless @options.email_from.blank?
 
             MailTemplateMailer.deliver_to_address(email,@mail_template,vars )
-            ef = Share::EmailFriend.create(:end_user_id => myself.id,:from_name => sender_name,:to_email => email,:message => h(@message.message), :sent_at => Time.now,:ip_address => request.remote_ip, :session => session.session_id, :site_url => page_path)
+            site_url = @message.content_node ? @message.content_node.link : page_path
+            ef = Share::EmailFriend.create(:end_user_id => myself.id,:from_name => sender_name,:to_email => email,:message => h(@message.message), :sent_at => Time.now,:ip_address => request.remote_ip, :session => session.session_id, :site_url => site_url, :content_node_id => @message.content_node_id)
 
             if connection_type == :target && conn_data.respond_to?(:share_notification)
               targs = ef.attributes

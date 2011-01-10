@@ -67,6 +67,11 @@ class Share::TellFeature < ParagraphFeature
         c.define_button_tag('tell_friend:button')
         c.define_expansion_tag('cancel') { |tag| data[:message].send_type == 'select' }
         c.define_button_tag('tell_friend:cancel:button', :onclick => 'document.location=document.location; return false');
+
+      c.expansion_tag('tell_friend:content') { |t| t.locals.content = data[:message].content_node }
+      c.value_tag('tell_friend:content:id') { |t| t.locals.content.id }
+      c.h_tag('tell_friend:content:title') { |t| t.locals.content.title }
+      c.link_tag('tell_friend:content:content') { |t| t.locals.content.link }
     end
   end
   

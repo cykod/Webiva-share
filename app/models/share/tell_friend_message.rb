@@ -1,6 +1,6 @@
 
 class Share::TellFriendMessage < HashModel
-  attributes :to => '', :subject => '',:message => '',:send_type => 'manual', :manual_to => nil,:name => nil, :first_name => nil, :last_name => nil, :email => nil, :require_email => false
+  attributes :to => '', :subject => '',:message => '',:send_type => 'manual', :manual_to => nil,:name => nil, :first_name => nil, :last_name => nil, :email => nil, :require_email => false, :content_node_id => nil
 
   validates_presence_of :send_type
   
@@ -33,5 +33,9 @@ class Share::TellFriendMessage < HashModel
     end
     email_list      
   end  
+
+  def content_node
+    @content_node ||= ContentNode.find_by_id(self.content_node_id) if self.content_node_id
+  end
 end  
 

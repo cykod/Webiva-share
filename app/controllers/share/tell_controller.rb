@@ -2,7 +2,12 @@
 class Share::TellController < ParagraphController 
   
   editor_header "Share Paragraphs"
-  editor_for :tell_friend, :name => 'Tell a friend Paragraph', :feature => :share_tell_friend, :inputs => { :variables => [ [ :vars, 'Invite Variables', :variables ], [:target, "Invite Target", :target] ] }  
+  editor_for :tell_friend, :name => 'Tell a friend Paragraph', :feature => :share_tell_friend,
+             :inputs => { :variables => [[:vars, 'Invite Variables', :variables ],
+                                         [:target, "Invite Target", :target]],
+                          :content => [[:id, "Content ID", :path],
+                                       [:content_identifier, 'Content ID', :content]]
+                        }  
   
   user_actions :plaxo_import
   
@@ -15,7 +20,9 @@ class Share::TellController < ParagraphController
     
     boolean_options :plaxo_import, :connect_to_people, :require_email, :captcha
     
-    integer_options :success_page_id,:email_template_id, :email_limit     
+    integer_options :email_template_id, :email_limit
+
+    page_options :success_page_id
   end
   
   
