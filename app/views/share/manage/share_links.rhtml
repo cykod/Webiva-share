@@ -1,0 +1,13 @@
+<% action_panel do |p| -%>
+  <%= p.link 'Download Visible Data', :icon => 'download.gif', :action => 'share_links_download_all' %>
+<% end -%>
+
+
+<hr/>
+
+<div class='admin_content'>
+<div id='share_links_table'>
+  <%= render :partial => 'share_links_table' %>
+</div>
+
+</div>

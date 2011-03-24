@@ -50,6 +50,8 @@ class Share::TellFeature < ParagraphFeature
             :onclick => "showPlaxoABChooser('tell_friend_#{data[:paragraph].id}_manual_to', '/website/share/tell/plaxo_import'); return false;"
           }
         end
+
+        c.link_tag("tracking") { |t| data[:tracking_url] }
         
         c.define_form_field_tag('tell_friend:to', :rows => '5', :control => 'text_area', :field => :manual_to) 
         c.define_form_field_tag('tell_friend:subject')
@@ -72,6 +74,34 @@ class Share::TellFeature < ParagraphFeature
       c.value_tag('tell_friend:content:id') { |t| t.locals.content.id }
       c.h_tag('tell_friend:content:title') { |t| t.locals.content.title }
       c.link_tag('tell_friend:content:content') { |t| t.locals.content.link }
+    end
+  end
+
+  feature :share_tell_view_impact, :default_feature => <<-FEATURE
+      <cms:visitors>
+        <div>
+          Total Visitors: <cms:count/> 
+        </div>
+        <cms:users>
+         Who's Signed up:
+         <ol>
+            <cms:user><li><cms:name/></li></cms:user>
+         </ol>
+        </cms:users>
+      </cms:visitors>
+      <cms:no_visitors>
+
+      </cms:no_visitors>
+  FEATURE
+
+  def share_tell_view_impact_feature(data)
+    webiva_feature(:share_tell_view_impact) do |c|
+
+      c.expansion_tag('visitors') { |t| data[:link].visitors > 0 }
+      c.value_tag('visitors:count') { |t| data[:link].visitors }
+
+      c.loop_tag('visitors:user','users') { |t| data[:link].users }
+      c.user_details_tags('visitors:user')
     end
   end
   

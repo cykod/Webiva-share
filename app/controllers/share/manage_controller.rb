@@ -101,7 +101,53 @@
               :filename => "send_to_friend_page_statistics.csv"
               )
   end
-  
+
+
+
+  active_table :share_links_table, ShareLink,
+   [ :check, 
+     hdr(:string,"end_users.full_name",:label => "Name"),
+     hdr(:string,"end_users.email",:label => "Email"),
+     hdr(:number,:visitors),
+     :created_at
+   ]
+   
+   def share_links
+     cms_page_path [ 'Mail','Tell-a-Friend' ], "Share Links"
+     display_share_links_table(false)
+   end
+   
+   def display_share_links_table(display = true)
+     
+     @tbl = share_links_table_generate params, :order => 'created_at DESC', :include => [ :end_user ]
+     
+     render :partial => 'share_links_table' if display
+   end
+
+   def share_links_download_all
+    @tbl = share_links_table_generate params,:order => 'created_at DESC',:all => 1
+    
+    output = ''
+    CSV::Writer.generate(output) do |csv|
+      csv << [ 'Name', 'Email','Visitors' ,'Created' ]
+      @tbl.data.each do |t| 
+        csv << [ t.end_user ? t.end_user.full_name : 'Anonymous'.t,
+                 t.end_user ? t.end_user.email : '' ,
+                 t.visitors,
+                 t.created_at.to_s(:long) ]
+      end
+    end
+
+     
+    send_data(output,
+              :stream => true,
+              :type => "text/csv",
+              :disposition => 'attachment',
+              :filename => "share_links_information.csv"
+              )
+  end
+
+
   
 end
 

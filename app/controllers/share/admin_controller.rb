@@ -12,7 +12,7 @@ class Share::AdminController < ModuleController
 
   register_handler :navigation, :mail, "Share::AdminController"
 
-  register_handler :page, :before_request, "Share::SourceLinkHandler"
+  register_handler :page, :post_process, "Share::SourceLinkHandler"
 
   def self.navigation_mail_handler_info
     {:name => 'Mail Pages',

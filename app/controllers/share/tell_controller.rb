@@ -8,6 +8,8 @@ class Share::TellController < ParagraphController
                           :content => [[:id, "Content ID", :path],
                                        [:content_identifier, 'Content ID', :content]]
                         }  
+
+  editor_for :view_impact, :name => 'See your impact sharing impact', :feature => :share_tell_view_impact, :no_options => true
   
   user_actions :plaxo_import
   
@@ -26,10 +28,6 @@ class Share::TellController < ParagraphController
   end
   
   
-  def tell_friend
-    @options = TellFriendOptions.new(params[:tell_friend] || paragraph.data || {})
-    return if handle_paragraph_update(@options)
-  end
  
 
   def plaxo_import

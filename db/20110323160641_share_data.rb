@@ -2,7 +2,9 @@ class ShareData < ActiveRecord::Migration
   def self.up
     create_table :share_links do |t|
       t.integer :end_user_id
+      t.integer :domain_log_visitor_id
       t.string :identifier_hash
+      t.integer :visitors, :default => 0
       t.timestamps
     end
 

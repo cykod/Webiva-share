@@ -6,6 +6,7 @@ class Share::TellRenderer < ParagraphRenderer
 
   features '/share/tell_feature'
   paragraph :tell_friend
+  paragraph :view_impact
   
   
   def tell_friend
@@ -18,15 +19,7 @@ class Share::TellRenderer < ParagraphRenderer
       require_js((request.ssl? ? 'https' : 'http')  + '://www.plaxo.com/css/m/js/abc_launcher.js')
     end
 
-    if @options.tracking_link
-      # generate a tracking link
-      if myself.id
-        @user_link = ShareLink.fetch(myself) 
-        @tracking_url = @user_link.link(@options.tracking_page_url)
-      else
-        @tracking_url = @options.tracking_page_url
-      end
-    end
+    generate_tracking_link(myself) if @options.tracking_link
 
     @message = Share::TellFriendMessage.new(params["tell_friend_#{paragraph.id}"] || params["tell_friend_submit"])
 
@@ -59,8 +52,12 @@ class Share::TellRenderer < ParagraphRenderer
           else
             people_attr[:name] = @message.name
           end
-          @usr = EndUser.push_target(@message.email,people_attr)
+
+          
+          @usr = EndUser.push_target(@message.email,people_attr,myself.anonymous_tracking_information)
           @usr.tag_names_add(@options.people_tags) if !@options.people_tags.blank?
+
+          generate_tracking_link(@usr) if @options.tracking_link
         end
 
         if @options.email_template_id.to_i > 0  && @mail_template = MailTemplate.find_by_id(@options.email_template_id.to_i)
@@ -133,13 +130,37 @@ class Share::TellRenderer < ParagraphRenderer
       return    
     end
     
-    data = { :message => @message,:paragraph => paragraph, :sent => flash[:sent_to_a_friend], :options => @options, :captcha => @captcha }
+    data = { :message => @message,:paragraph => paragraph, :sent => flash[:sent_to_a_friend], :options => @options, :captcha => @captcha, :tracking_url => @tracking_url }
     
     render_paragraph :text => share_tell_friend_feature(data)
 
   end
-  
 
+
+  def view_impact
+
+    return render_paragraph :text => 'Not Logged In' if !myself.id
+
+
+    @link = ShareLink.fetch(myself)
+
+
+    render_paragraph :feature => :share_tell_view_impact
+
+  end
+
+
+
+  def generate_tracking_link(user)
+    # generate a tracking link
+    if user.id
+      @user_link = ShareLink.fetch(user) 
+      @tracking_url = @user_link.link(@options.tracking_page_url)
+    else
+      @tracking_url = Configuration.domain_link(@options.tracking_page_url)
+    end
+  end
+  
   
   def check_email_limit!
     email_limit = (@options.email_limit || 20).to_i
