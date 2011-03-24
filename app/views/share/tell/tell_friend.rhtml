@@ -1,5 +1,11 @@
 <div class='cms_form'>
 <% paragraph_options_form_for 'Tell a friend Options', :tell_friend do |f| -%>
+
+
+<% tabled_ajax_tabs ['Options','Tracking'],'Options' do |t| %>
+
+  
+<% t.tabled_tab do %>
   <%= f.select :email_template_id,[['--Select Mail Template--',nil]] + MailTemplate.site_template_options, :vertical => true %>
   <%= f.text_field :email_from, :vertical => true, :description => 'Leave blank to use default from address\nEnter a full email address, use %%sender_name%% for the name of the submitter' %>
   <%= f.select :success_page_id, [['--Stay on same page--',nil]] +  SiteNode.page_options, :vertical => true %>
@@ -11,10 +17,22 @@
   <%= f.radio_buttons :share_level, Share::TellController::TellFriendOptions.share_level_select_options, :vertical => true, :description => 'This is only necessary for page connections' %>
   <%= f.radio_buttons :plaxo_import, [['Yes',true],['No',false]], :vertical => true,:label => 'Include Plaxo Javascript' %>
    <%= f.radio_buttons :require_email, [['Yes'.t,true],['No'.t,false]] %>
-   <%= f.radio_buttons :connect_to_people, [['Yes'.t,true],['No'.t,false]] %>
    <%= f.radio_buttons :captcha, [['Yes'.t,true],['No'.t,false]], :label => 'Require a Captcha' %>
 
-    <%= f.text_field :people_tags %>
+<% end -%>
+
+<% t.tabled_tab do %>
+  <%= f.radio_buttons :connect_to_people, [['Yes'.t,true],['No'.t,false]] %>
+  <%= f.text_field :people_tags %>
+
+  <%= f.yes_no :tracking_link, :description => 'Include a tracking link (use %%TRACKING_URL%% in the template)' %>
+  <%= f.page_selector :tracking_page_id, :description => 'Page to link to' %>
+
+<% end -%>
+
+<% end -%>
+
+
 
 <% end -%>
 </div>

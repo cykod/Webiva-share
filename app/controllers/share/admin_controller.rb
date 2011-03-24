@@ -12,6 +12,8 @@ class Share::AdminController < ModuleController
 
   register_handler :navigation, :mail, "Share::AdminController"
 
+  register_handler :page, :before_request, "Share::SourceLinkHandler"
+
   def self.navigation_mail_handler_info
     {:name => 'Mail Pages',
       :pages => [ [ "Tell a Friend", :editor_mailing, "mail_tell_a_friend.png", {  :controller => '/share/manage', :action => 'tell_friends' },

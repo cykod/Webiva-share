@@ -18,6 +18,16 @@ class Share::TellRenderer < ParagraphRenderer
       require_js((request.ssl? ? 'https' : 'http')  + '://www.plaxo.com/css/m/js/abc_launcher.js')
     end
 
+    if @options.tracking_link
+      # generate a tracking link
+      if myself.id
+        @user_link = ShareLink.fetch(myself) 
+        @tracking_url = @user_link.link(@options.tracking_page_url)
+      else
+        @tracking_url = @options.tracking_page_url
+      end
+    end
+
     @message = Share::TellFriendMessage.new(params["tell_friend_#{paragraph.id}"] || params["tell_friend_submit"])
 
     connection_type,conn_data = page_connection(:content)
@@ -61,7 +71,7 @@ class Share::TellRenderer < ParagraphRenderer
           sender_email = myself.email.blank? ? @message.email : myself.email
 
           @message.emails.each do |email|
-            vars = { :sender_name => h(sender_name), :sender_email => h(sender_email), :message =>@mail_template.is_text ? h(@message.message) : simple_format(h(@message.message)),  :subject => @message.subject }
+            vars = { :sender_name => h(sender_name), :sender_email => h(sender_email), :message =>@mail_template.is_text ? h(@message.message) : simple_format(h(@message.message)),  :subject => @message.subject, :tracking_url => @tracking_url }
 
             connection_type,conn_data = page_connection(:variables)
             if connection_type == :vars

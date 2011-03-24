@@ -16,6 +16,8 @@ class Share::TellFriendMessage < HashModel
     errors.add_to_base("Please enter your email") if self.email.blank? && self.require_email
 
     self.name = self.first_name.to_s + " " + self.last_name.to_s if !self.first_name.blank? || !self.last_name.blank?
+
+    errors.add_to_base("Message cannot include links") if self.message.include?("http://") || self.message =~ /<a/i
   
   end
   

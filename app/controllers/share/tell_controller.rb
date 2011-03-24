@@ -12,17 +12,17 @@ class Share::TellController < ParagraphController
   user_actions :plaxo_import
   
   class TellFriendOptions  < HashModel
-    attributes :email_template_id => nil, :email_limit => 20 ,:success_page_id => nil, :default_subject => nil, :default_message => nil, :show => 'both', :email_from => nil, :share_level => 'low', :plaxo_import => true,  :connect_to_people => false, :people_tags => '', :require_email => false, :captcha => false
+    attributes :email_template_id => nil, :email_limit => 20 ,:success_page_id => nil, :default_subject => nil, :default_message => nil, :show => 'both', :email_from => nil, :share_level => 'low', :plaxo_import => true,  :connect_to_people => false, :people_tags => '', :require_email => false, :captcha => false, :tracking_link => false, :tracking_page_id => nil
 
 
     has_options :share_level, ['low','medium','high']
     validates_presence_of :email_template_id
     
-    boolean_options :plaxo_import, :connect_to_people, :require_email, :captcha
+    boolean_options :plaxo_import, :connect_to_people, :require_email, :captcha, :tracking_link
     
     integer_options :email_template_id, :email_limit
 
-    page_options :success_page_id
+    page_options :success_page_id, :tracking_page_id
   end
   
   
