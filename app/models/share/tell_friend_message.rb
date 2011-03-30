@@ -7,6 +7,12 @@ class Share::TellFriendMessage < HashModel
   include WebivaCaptcha::ModelSupport
 
   attr_accessor :skip_subject, :skip_message
+
+  def user=(usr)
+    self.first_name = usr.first_name if self.first_name.blank?
+    self.last_name = usr.last_name if self.last_name.blank? 
+    self.email = usr.email if self.email.blank?
+  end
   
   def validate
     errors.add_to_base("Please enter a subject") if self.subject.blank? && !self.skip_subject   
@@ -20,6 +26,7 @@ class Share::TellFriendMessage < HashModel
     errors.add_to_base("Message cannot include links") if self.message.include?("http://") || self.message =~ /<a/i
   
   end
+
   
   attr_reader :emails
   

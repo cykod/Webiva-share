@@ -22,6 +22,7 @@ class Share::TellRenderer < ParagraphRenderer
     generate_tracking_link(myself) if @options.tracking_link
 
     @message = Share::TellFriendMessage.new(params["tell_friend_#{paragraph.id}"] || params["tell_friend_submit"])
+    @message.user = myself
 
     connection_type,conn_data = page_connection(:content)
     if connection_type
@@ -43,7 +44,7 @@ class Share::TellRenderer < ParagraphRenderer
       # Send the message
       if @message.errors.length == 0
 
-        if @options.connect_to_people && !@message.email.blank?
+        if @options.connect_to_people && !@message.email.blank? && !myself.id
 
           people_attr = {}
           if !@message.first_name.blank? | !@message.last_name.blank?
