@@ -56,6 +56,8 @@ class Share::TellRenderer < ParagraphRenderer
           
           @usr = EndUser.push_target(@message.email,people_attr,myself.anonymous_tracking_information)
           @usr.tag_names_add(@options.people_tags) if !@options.people_tags.blank?
+          
+          session[:captured_user_info] =  { :email => @usr.email, :first_name => @usr.first_name, :last_name => @usr.last_name }
 
           generate_tracking_link(@usr) if @options.tracking_link
         end
