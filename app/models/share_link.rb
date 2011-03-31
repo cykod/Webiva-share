@@ -27,6 +27,10 @@ class ShareLink < DomainModel
 
     visitor
   end
+  
+  def emails
+    Share::EmailFriend.count(:conditions => { :end_user_id => self.end_user_id } )
+  end
 
   def users
     EndUser.find(:all,:conditions => { :source_user_id => self.end_user_id }, :order => 'created_at DESC' )

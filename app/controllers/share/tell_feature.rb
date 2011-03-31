@@ -100,6 +100,7 @@ class Share::TellFeature < ParagraphFeature
       c.expansion_tag('visitors') { |t| data[:link].visitors > 0 }
       c.value_tag('visitors:count') { |t| data[:link].visitors }
 
+      c.value_tag('emails') { |t| data[:link].emails }
       c.loop_tag('visitors:user','users') { |t| data[:link].users }
       c.user_details_tags('visitors:user')
     end
