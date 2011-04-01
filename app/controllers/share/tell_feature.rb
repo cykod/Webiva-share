@@ -52,6 +52,7 @@ class Share::TellFeature < ParagraphFeature
         end
 
         c.link_tag("tracking") { |t| data[:tracking_url] }
+        c.value_tag('source') { |t| data[:tracking_source] }
         
         c.define_form_field_tag('tell_friend:to', :rows => '5', :control => 'text_area', :field => :manual_to) 
         c.define_form_field_tag('tell_friend:subject')

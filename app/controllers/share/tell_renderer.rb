@@ -133,7 +133,7 @@ class Share::TellRenderer < ParagraphRenderer
       return    
     end
     
-    data = { :message => @message,:paragraph => paragraph, :sent => flash[:sent_to_a_friend], :options => @options, :captcha => @captcha, :tracking_url => @tracking_url }
+    data = { :message => @message,:paragraph => paragraph, :sent => flash[:sent_to_a_friend], :options => @options, :captcha => @captcha, :tracking_url => @tracking_url, :tracking_source => @tracking_source }
     
     render_paragraph :text => share_tell_friend_feature(data)
 
@@ -160,6 +160,7 @@ class Share::TellRenderer < ParagraphRenderer
     if user.id
       @user_link = ShareLink.fetch(user) 
       @tracking_url = @user_link.link(@options.tracking_page_url)
+      @tracking_source = @user_link.identifier_hash
     else
       @tracking_url = Configuration.domain_link(@options.tracking_page_url)
     end
