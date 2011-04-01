@@ -147,6 +147,7 @@ class Share::TellRenderer < ParagraphRenderer
 
     @link = ShareLink.fetch(myself)
 
+    @myself = myself
 
     render_paragraph :feature => :share_tell_view_impact
 

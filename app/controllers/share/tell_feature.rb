@@ -95,7 +95,7 @@ class Share::TellFeature < ParagraphFeature
   FEATURE
 
   def share_tell_view_impact_feature(data)
-    webiva_feature(:share_tell_view_impact) do |c|
+    webiva_feature(:share_tell_view_impact,data) do |c|
 
       c.expansion_tag('visitors') { |t| data[:link].visitors > 0 }
       c.value_tag('visitors:count') { |t| data[:link].visitors }
