@@ -3,6 +3,9 @@ class Share::TellFriendMessage < HashModel
   attributes :to => '', :subject => '',:message => '',:send_type => 'manual', :manual_to => nil,:name => nil, :first_name => nil, :last_name => nil, :email => nil, :require_email => false, :content_node_id => nil
 
   validates_presence_of :send_type
+  validates_presence_of :first_name
+  validates_presence_of :last_name
+  validates_as_email :email, :allow_blank => true
   
   include WebivaCaptcha::ModelSupport
 
@@ -22,6 +25,7 @@ class Share::TellFriendMessage < HashModel
     errors.add_to_base("Please enter your email") if self.email.blank? && self.require_email
 
     self.name = self.first_name.to_s + " " + self.last_name.to_s if !self.first_name.blank? || !self.last_name.blank?
+
 
     errors.add_to_base("Message cannot include links") if self.message.include?("http://") || self.message =~ /<a/i
   
