@@ -38,10 +38,10 @@ class Share::TellFriendMessage < HashModel
     email_list = self.manual_to.to_s.split(/\n|,/).collect { |eml| eml.strip }.select { |eml| !eml.blank? }.uniq
     email_list.select { |eml| !eml.blank? }.each do  |email|
       if email =~ /\<([^\>]+)\>/
-        errors.add_to_base("'#{h(email.to_s)}' is not a valid email") if !($1 =~ RFC822::EmailAddress)
+        errors.add_to_base("'#{h(email.to_s.gsub(/\.\.+/,'.'))}' is not a valid email") if !($1 =~ RFC822::EmailAddress)
 
       elsif !(email =~ RFC822::EmailAddress)
-        errors.add_to_base("'#{email.to_s}' is not a valid email")
+        errors.add_to_base("'#{h(email.to_s.gsub(/\.\.+/,'.'))}' is not a valid email")
       end
     end
     email_list      
