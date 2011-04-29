@@ -107,6 +107,25 @@ class Share::TellFeature < ParagraphFeature
     end
   end
   
-  
-  
+  feature :share_tell_sources, :default_feature => <<-FEATURE
+  <cms:sources>
+  <h2>Sources</h2>
+  <ul>
+    <cms:source>
+      <cms:user>
+        <li><cms:name/></li>
+      </cms:user>
+    </cms:source>
+  </ul>
+  </cms:sources>
+  FEATURE
+
+  def share_tell_sources_feature(data)
+    webiva_feature(:share_tell_sources, data) do |c|
+      c.loop_tag('source') { |t| data[:sources] }
+      c.user_tags('source:user') { |t| t.locals.user = t.locals.source }
+
+      data[:options].features(c, data)
+    end
+  end
 end

@@ -7,7 +7,7 @@ class Share::TellRenderer < ParagraphRenderer
   features '/share/tell_feature'
   paragraph :tell_friend
   paragraph :view_impact
-  
+  paragraph :sources
   
   def tell_friend
     @captcha = WebivaCaptcha.new(self)
@@ -153,6 +153,21 @@ class Share::TellRenderer < ParagraphRenderer
 
   end
 
+  def sources
+    @options = paragraph_options :sources
+    return render_paragraph :nothing => true unless myself.id
+    
+    if editor?
+      @sources = EndUser.all :limit => 10
+      render_paragraph :feature => :share_tell_sources
+      return
+    end
+
+    @sources = EndUser.where(:source_user_id => myself.id).all
+    @options.reward myself, @sources
+    Rails.logger.error @sources.inspect
+    render_paragraph :feature => :share_tell_sources
+  end
 
 
   def generate_tracking_link(user)

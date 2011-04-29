@@ -10,6 +10,7 @@ class Share::TellController < ParagraphController
                         }  
 
   editor_for :view_impact, :name => 'See your impact sharing impact', :feature => :share_tell_view_impact, :no_options => true
+  editor_for :sources, :name => 'Sources', :feature => :share_tell_sources
   
   user_actions :plaxo_import
   
@@ -28,7 +29,64 @@ class Share::TellController < ParagraphController
   end
   
   
- 
+  class SourcesOptions < HashModel
+    include HandlerActions
+
+    attributes :rewards_handler => nil, :data => {}
+    
+    options_form(
+                 fld(:rewards_handler, :select, :options => :rewards_handler_options)
+                 )
+    
+    def rewards_handler_options
+      [['--Select rewards handler--', nil]] + get_handler_options(:share, :rewards)
+    end
+    
+    def validate
+      if self.handler
+        self.errors.add(:data, 'is invalid') unless self.handler.valid?
+      end
+    end
+
+    def handler_info
+      @handler_info ||= get_handler_info(:share, :rewards, self.rewards_handler) if self.rewards_handler
+    end
+    
+    def handler_class
+      self.handler_info[:class] if self.handler_info
+    end
+    
+    def create_handler
+      if self.handler_class
+        h = self.handler_class.new self.data
+        h.format_data
+        h
+      else
+        nil
+      end
+    end
+
+    def handler
+      @handler ||= self.create_handler
+    end
+    
+    def reward(user, sources)
+      self.handler.reward user, sources if self.handler
+    end
+    
+    def data=(hsh)
+      @data = hsh.to_hash.symbolize_keys
+    end
+
+    def options_partial
+      '/share/tell/sources'
+    end
+    
+    def features(c, data)
+      return unless self.handler && self.handler.respond_to?(:features)
+      self.handler.features(c, data)
+    end
+  end
 
   def plaxo_import
     render :inline => '<html><head><script type="text/javascript" src="https://www.plaxo.com/ab_chooser/abc_comm.jsdyn"></script></head><body></body></html>'
