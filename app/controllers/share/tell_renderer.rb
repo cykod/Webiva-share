@@ -165,7 +165,7 @@ class Share::TellRenderer < ParagraphRenderer
 
     @sources = EndUser.where(:source_user_id => myself.id).all
     @options.reward myself, @sources
-    Rails.logger.error @sources.inspect
+
     render_paragraph :feature => :share_tell_sources
   end
 
