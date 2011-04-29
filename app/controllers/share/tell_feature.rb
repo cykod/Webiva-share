@@ -125,7 +125,8 @@ class Share::TellFeature < ParagraphFeature
       c.loop_tag('source') { |t| data[:sources] }
       c.user_tags('source:user') { |t| t.locals.user = t.locals.source }
 
-      data[:options].features(c, data)
+      c.expansion_tag('reward') { |t| data[:options].handler }
+      data[:options].features(c, data, 'reward')
     end
   end
 end

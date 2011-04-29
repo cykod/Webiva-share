@@ -82,9 +82,9 @@ class Share::TellController < ParagraphController
       '/share/tell/sources'
     end
     
-    def features(c, data)
+    def features(c, data, base='reward')
       return unless self.handler && self.handler.respond_to?(:features)
-      self.handler.features(c, data)
+      self.handler.features(c, data, base)
     end
   end
 
