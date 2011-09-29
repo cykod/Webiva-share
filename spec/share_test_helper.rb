@@ -27,7 +27,7 @@ module ShareTestHelper
     
   end
   def create_message(options={})
-    Share::TellFriendMessage.new({:send_type => 'manual', :subject => 'test subject', :manual_to => 'admin@cykod.com', :message => 'test message'}.merge(options))
+    Share::TellFriendMessage.new({:send_type => 'manual', :subject => 'test subject', :manual_to => 'admin@cykod.com', :message => 'test message', :first_name => 'Test', :last_name => 'Johnson'  }.merge(options))
   end
   def stored_email_friends
     @end_user = create_end_user
