@@ -96,9 +96,7 @@ class Share::TellRenderer < ParagraphRenderer
           end
 
 
-          if paragraph.update_action_count > 0
-            paragraph.run_triggered_actions({ :sender_name => h(sender_name), :message => h(@message.message), :recipients => @message.emails.join("<br/>") },'action',myself)
-          end
+          run_triggered_actions('action',{ :sender_name => h(sender_name), :message => h(@message.message), :recipients => @message.emails.join("<br/>") },myself.id ? myself : @usr)
 
           if @options.success_page_id.to_i > 0
             redirect_paragraph :site_node => @options.success_page_id.to_i

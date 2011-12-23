@@ -2,7 +2,7 @@
 <% paragraph_options_form_for 'Tell a friend Options', :tell_friend do |f| -%>
 
 
-<% tabled_ajax_tabs ['Options','Tracking'],'Options' do |t| %>
+<% tabled_ajax_tabs ['Options','Tracking','Triggered Actions'],'Options' do |t| %>
 
   
 <% t.tabled_tab do %>
@@ -28,11 +28,15 @@
   <%= f.yes_no :tracking_link, :description => 'Include a tracking link (use %%TRACKING_URL%% in the template)' %>
   <%= f.page_selector :tracking_page_id, :description => 'Page to link to' %>
 
+ <% end -%>
+<% t.tab do -%>
+   <div id='cms_triggered_actions'>
+      <%= render :partial => '/editor/includes/actions' %>
+    </div>
 <% end -%>
 
+
+
 <% end -%>
-
-
-
 <% end -%>
 </div>

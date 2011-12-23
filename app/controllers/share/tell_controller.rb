@@ -7,7 +7,7 @@ class Share::TellController < ParagraphController
                                          [:target, "Invite Target", :target]],
                           :content => [[:id, "Content ID", :path],
                                        [:content_identifier, 'Content ID', :content]]
-                        }  
+                        },  :triggers => [['Sent Email','action']]
 
   editor_for :view_impact, :name => 'See your impact sharing impact', :feature => :share_tell_view_impact, :no_options => true
   editor_for :sources, :name => 'Sources', :feature => :share_tell_sources
